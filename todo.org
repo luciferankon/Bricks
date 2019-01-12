@@ -1,0 +1,7 @@
+* DONE create a basic view
+* DONE move paddle
+* DONE make a paddle class which will have it's own property
+* DONE generate paddle inspite of drawing it
+* DONE move the ball
+* DONE move the ball according to the direction
+* DONE handle collision
