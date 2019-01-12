@@ -7,11 +7,11 @@ class Paddle {
   }
 
   moveLeft(){
-    this.left = this.left - 10;
+    this.left = this.left - 20;
   }
 
   moveRight(){
-    this.left = this.left + 10;
+    this.left = this.left + 20;
   }
 }
 

@@ -5,3 +5,8 @@
 * DONE move the ball
 * DONE move the ball according to the direction
 * DONE handle collision
+* DONE handle collision with paddle
+* DONE make wall a different class
+* DONE make game a separate class
+* DONE handle collision in the game class
+* DONE generate new velocity from the wall class
