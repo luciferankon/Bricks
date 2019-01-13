@@ -88,13 +88,10 @@ const moveBall = function(document, ball, paddle, wall, brick) {
   const collisionWith = Object.keys(collisionCandidate).filter(
     element => collisionCandidate[element]
   );
-  if(collisionWith[0]=='brick'){
-    brick.removeBrick();
-    drawBrick(document, brick);
-  }
   velocity = game.getVelocity(collisionWith);
   ball.setVelocity(velocity);
   ball.move();
+  drawBrick(document, brick);
   drawBall(document, ball);
 };
 

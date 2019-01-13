@@ -6,6 +6,7 @@ class Brick{
   }
 
   collided(x,y){
+   this.removeBrick();
     return {x: x, y: -y};
   }
 
