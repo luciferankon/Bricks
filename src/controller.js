@@ -1,3 +1,6 @@
+const ROW_COUNT = 5;
+const COLUMN_COUNT = 12;
+
 const setPaddlePosition = function(paddle, paddleContainer) {
   paddleContainer.style.height = addPx(paddle.height);
   paddleContainer.style.width = addPx(paddle.width);
@@ -16,7 +19,7 @@ const setBrickPosition = function(brick, brickContainer) {
   brickContainer.style.height = addPx(brick.height);
   brickContainer.style.width = addPx(brick.width);
   brickContainer.style.left = addPx(brick.position.x);
-  brickContainer.style.top = addPx(brick.position.y);
+  brickContainer.style.bottom = addPx(brick.position.y);
 };
 
 const getMainDiv = function(document) {
@@ -52,12 +55,14 @@ const createBall = function(document) {
   main.appendChild(ballContainer);
 };
 
-const createBrick = function(document) {
-  const brickContainer = document.createElement("div");
-  const main = getMainDiv(document);
-  brickContainer.className = "brick";
-  brickContainer.id = "brick_1";
-  main.appendChild(brickContainer);
+const createBricks = function(document) {
+  for (let brickCount = 0; brickCount < ROW_COUNT*COLUMN_COUNT; brickCount++) {
+    const brickContainer = document.createElement("div");
+    const main = getMainDiv(document);
+    brickContainer.className = "brick";
+    brickContainer.id = `brick_${brickCount + 1}`;
+    main.appendChild(brickContainer);
+  }
 };
 
 const drawWall = function(document, wall) {
@@ -76,13 +81,15 @@ const drawBall = function(document, ball) {
   setBallPosition(ball, ballContainer);
 };
 
-const drawBrick = function(document, brick) {
-  const brickContainer = document.getElementById("brick_1");
-  setBrickPosition(brick, brickContainer);
+const drawBricks = function(document, bricks) {
+  for (let brickCount = 0; brickCount < ROW_COUNT*COLUMN_COUNT; brickCount++) {
+    const brickContainer = document.getElementById(`brick_${brickCount + 1}`);
+    setBrickPosition(bricks.bricks[brickCount], brickContainer);
+  }
 };
 
-const moveBall = function(document, ball, paddle, wall, brick) {
-  const game = new Game(paddle, ball, wall, brick);
+const moveBall = function(document, ball, paddle, wall, bricks) {
+  const game = new Game(paddle, ball, wall, bricks);
   let velocity = new Velocity(ball.velocity.x, ball.velocity.y);
   const collisionCandidate = game.collidedWith();
   const collisionWith = Object.keys(collisionCandidate).filter(
@@ -91,7 +98,7 @@ const moveBall = function(document, ball, paddle, wall, brick) {
   velocity = game.getVelocity(collisionWith);
   ball.setVelocity(velocity);
   ball.move();
-  drawBrick(document, brick);
+  drawBricks(document, bricks);
   drawBall(document, ball);
 };
 
@@ -105,24 +112,31 @@ const movePaddle = function(document, paddle) {
   drawPaddle(document, paddle);
 };
 
-const createElements = function(document, ball, paddle, wall, brick) {
+const createElements = function(document, ball, paddle, wall, bricks) {
   createWall(document);
   createBall(document);
   createPaddle(document);
-  createBrick(document);
+  createBricks(document);
   drawWall(document, wall);
   drawBall(document, ball);
   drawPaddle(document, paddle);
-  drawBrick(document, brick);
-  setInterval(moveBall.bind(null, document, ball, paddle, wall, brick), 10);
+  drawBricks(document, bricks);
+  setInterval(moveBall.bind(null, document, ball, paddle, wall, bricks), 10);
 };
 
 const initialize = function() {
   const paddle = new Paddle(405, 5, 150, 20);
   const ball = new Ball({ x: 470, y: 25 }, 10, { x: 2, y: 2 });
   const wall = new Wall(600, 960);
-  const brick = new Brick(20, 80, { x: 400, y: 0 });
-  createElements(document, ball, paddle, wall, brick);
+  const allBricks = [];
+  for (let rowCount = 0; rowCount < ROW_COUNT; rowCount++) {
+    for (let columnCount = 0; columnCount < COLUMN_COUNT; columnCount++) {
+      const brick = new Brick(20, 80, { x: columnCount * 80, y: 580 - rowCount * 20 });
+      allBricks.push(brick);
+    }
+  }
+  const bricks = new Bricks(allBricks);
+  createElements(document, ball, paddle, wall, bricks);
   const main_div = getMainDiv(document);
   main_div.focus();
   main_div.onkeydown = movePaddle.bind(null, document, paddle);

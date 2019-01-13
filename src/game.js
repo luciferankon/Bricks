@@ -1,9 +1,9 @@
 class Game {
-  constructor(paddle, ball, wall, brick) {
+  constructor(paddle, ball, wall, bricks) {
     this.paddle = paddle;
     this.ball = ball;
     this.wall = wall;
-    this.brick = brick;
+    this.bricks = bricks;
   }
 
   collidedWith() {
@@ -14,44 +14,43 @@ class Game {
       paddle:
         this.ball.y <= this.paddle.bottom + 15 &&
         Math.abs(this.ball.x - this.paddle.left) < this.paddle.width,
-      brick:
-        this.ball.y >= this.wall.height - this.brick.position.y - 50 &&
-        Math.abs(this.ball.x - this.brick.position.x) < 80
     };
   }
-
+  
   getVelocity([collisionWith]) {
+    let newVelocity = this.bricks.checkCollision(this.ball);
     const getVelocityFrom = {
-      horizontalWall: this.wall.updateVelocity.bind(this.wall,
-        'horizontalWall',
-        this.ball.velocity.x,
-        this.ball.velocity.y
+      horizontalWall: this.wall.updateVelocity.bind(
+        this.wall,
+        "horizontalWall",
+        newVelocity.x,
+        newVelocity.y
       ),
-      verticalWall: this.wall.updateVelocity.bind(this.wall,
-        'verticalWall',
-        this.ball.velocity.x,
-        this.ball.velocity.y
+      verticalWall: this.wall.updateVelocity.bind(
+        this.wall,
+        "verticalWall",
+        newVelocity.x,
+        newVelocity.y
       ),
-      bottomWall: this.wall.updateVelocity.bind(this.wall,
-        'bottomWall',
-        this.ball.velocity.x,
-        this.ball.velocity.y
+      bottomWall: this.wall.updateVelocity.bind(
+        this.wall,
+        "bottomWall",
+        newVelocity.x,
+        newVelocity.y
       ),
-      paddle: this.paddle.updateVelocity.bind(this.paddle,
-        this.ball.velocity.x,
-        this.ball.velocity.y
+      paddle: this.paddle.updateVelocity.bind(
+        this.paddle,
+        newVelocity.x,
+        newVelocity.y
       ),
-      brick: this.brick.collided.bind(this.brick,
-        this.ball.velocity.x,
-        this.ball.velocity.y
-      ),
-      undefined: this.wall.updateVelocity.bind(this.wall,
-        'undefined',
-        this.ball.velocity.x,
-        this.ball.velocity.y
+      undefined: this.wall.updateVelocity.bind(
+        this.wall,
+        "undefined",
+        newVelocity.x,
+        newVelocity.y
       )
-    }
-    const newVelocity = getVelocityFrom[collisionWith]();
+    };
+    newVelocity = getVelocityFrom[collisionWith]();
     const velocity = new Velocity(newVelocity.x, newVelocity.y);
     return velocity;
   }
