@@ -10,7 +10,7 @@
 * DONE make game a separate class
 * DONE handle collision in the game class
 * DONE generate new velocity from the wall class
-* TODO write tests for the current model
-* TODO introduce bricks to the game
-* TODO handle collision with bricks
-* TODO make bricks it's own class
+* DONE write tests for the current model
+* DONE introduce bricks to the game
+* DONE handle collision with only one brick
+* DONE make bricks it's own class

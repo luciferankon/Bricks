@@ -6,6 +6,10 @@ class Paddle {
     this.height = height;
   }
 
+  updateVelocity(x, y){
+    return {x: x, y: -y};
+  }
+
   moveLeft(){
     this.left = this.left - 20;
   }
