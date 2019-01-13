@@ -14,4 +14,3 @@ class Paddle {
     this.left = this.left + 20;
   }
 }
-
