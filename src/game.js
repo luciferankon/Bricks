@@ -13,10 +13,10 @@ class Game {
       verticalWall: this.ball.y >= this.wall.height - 20,
       paddle:
         this.ball.y <= this.paddle.bottom + 15 &&
-        Math.abs(this.ball.x - this.paddle.left) < this.paddle.width,
+        isBetween(this.ball.x - this.paddle.left, 0, this.paddle.width)
     };
   }
-  
+
   getVelocity([collisionWith]) {
     let newVelocity = this.bricks.checkCollision(this.ball);
     const getVelocityFrom = {

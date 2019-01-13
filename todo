@@ -16,5 +16,6 @@
 * DONE make bricks it's own class
 * DONE move remove brick condition to its own class
 * write tests for added method and also for the game
-* introduce more bricks to the game
-* introduce bricks class to the game
+* DONE introduce more bricks to the game
+* DONE introduce bricks class to the game
+* TODO remove wall check separately in game make check default every time
