@@ -23,3 +23,8 @@
   position: absolute;
   background-color: brown;
 }
+
+.empty{
+  height: 0px;
+  width: 0px;
+}

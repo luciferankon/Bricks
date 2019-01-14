@@ -4,10 +4,15 @@ class Brick{
     this.width = width;
     this.position = position;
   }
-
-  removeBrick() {
-    this.height = 0;
-    this.width = 0;
-    this.position = { x: 0, y: 0 };
+ 
+  hasCollided(ball) {
+    return (
+      ball.y >= this.position.y - this.height &&
+      isBetween(ball.x - this.position.x, 0, this.width)
+    );
   }
 }
+
+const isBetween = function(number, lowerRange, upperRange) {
+  return number > lowerRange && number < upperRange;
+};

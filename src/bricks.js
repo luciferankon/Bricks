@@ -1,34 +1,30 @@
 class Bricks {
   constructor(bricks) {
     this.bricks = bricks;
+    this.removedBrickIds = [];
   }
 
-  hasCollided(ball, brick) {
-    return (
-      ball.y >= brick.position.y - brick.height &&
-      isBetween(ball.x - brick.position.x, 0, brick.width)
-    );
+
+  removeBrickId(id) {
+    let bricks = {};
+    Object.keys(this.bricks).filter(ID => ID !== id).forEach(id => (bricks[id] = this.bricks[id]));
+    this.bricks = bricks;
+  }
+
+  recordRemovedBricks(ids){
+    this.removedBrickIds = this.removedBrickIds.concat(ids);
   }
 
   checkCollision(ball) {
-    const collisionBrick = this.bricks.filter(
-      this.hasCollided.bind(null, ball)
+    const collisionBrickIds = Object.keys(this.bricks).filter(brickId =>
+      this.bricks[brickId].hasCollided(ball)
     );
+    this.recordRemovedBricks(collisionBrickIds);
     let velocity = new Velocity(ball.velocity.x, ball.velocity.y);
-    if (collisionBrick.length != 0) {
-      collisionBrick.filter(brick => brick.removeBrick());
-      // this.bricks = this.bricks.filter(brick => collisionBrick.some(collidedBrick => !isEqual(collidedBrick,brick)));
+    if (collisionBrickIds.length != 0) {
+      collisionBrickIds.forEach(id => this.removeBrickId(id));
       velocity = velocity.negateY();
     }
     return velocity;
   }
 }
-
-const isEqual = function(first,second){
-  const matchedKeys = Object.keys(first).filter((key)=>first[key]==second[key])
-  return matchedKeys.length == Object.keys(first).length;
-}
-
-const isBetween = function(number, lowerRange, upperRange) {
-  return number > lowerRange && number < upperRange;
-};

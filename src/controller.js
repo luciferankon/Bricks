@@ -82,9 +82,13 @@ const drawBall = function(document, ball) {
 };
 
 const drawBricks = function(document, bricks) {
-  for (let brickCount = 0; brickCount < bricks.bricks.length; brickCount++) {
-    const brickContainer = document.getElementById(`brick_${brickCount + 1}`);
-    setBrickPosition(bricks.bricks[brickCount], brickContainer);
+  const removedBrickIds = bricks.removedBrickIds;
+  const brickIds = Object.keys(bricks.bricks);
+  removedBrickIds.forEach(id => document.getElementById(`brick_${id}`).className = 'empty');
+  for (let brickCount = 0; brickCount < brickIds.length; brickCount++) {
+    let brickId = brickIds[brickCount]
+    const brickContainer = document.getElementById(`brick_${brickId}`);
+    setBrickPosition(bricks.bricks[brickId], brickContainer);
   }
 };
 
@@ -121,11 +125,11 @@ const initialize = function() {
   const paddle = new Paddle(405, 5, 150, 20);
   const ball = new Ball({ x: 470, y: 25 }, 10, { x: 2, y: 2 });
   const wall = new Wall(600, 960);
-  const allBricks = [];
+  const allBricks = {};
   for (let rowCount = 0; rowCount < ROW_COUNT; rowCount++) {
     for (let columnCount = 0; columnCount < COLUMN_COUNT; columnCount++) {
       const brick = new Brick(20, 80, { x: columnCount * 80, y: 580 - rowCount * 20 });
-      allBricks.push(brick);
+      allBricks[rowCount*COLUMN_COUNT + columnCount +1]=brick;
     }
   }
   const bricks = new Bricks(allBricks);
