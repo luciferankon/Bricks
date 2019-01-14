@@ -17,41 +17,50 @@ class Game {
     };
   }
 
+  updateState() {
+    let velocity = new Velocity(this.ball.velocity.x, this.ball.velocity.y);
+    const collisionCandidate = this.collidedWith();
+    const collisionWith = Object.keys(collisionCandidate).filter(
+      element => collisionCandidate[element]
+    );
+    velocity = this.getVelocity(collisionWith);
+    this.ball.setVelocity(velocity);
+    this.ball.move();
+  }
+
   getVelocity([collisionWith]) {
-    let newVelocity = this.bricks.checkCollision(this.ball);
+    let velocity = this.bricks.checkCollision(this.ball);
     const getVelocityFrom = {
       horizontalWall: this.wall.updateVelocity.bind(
         this.wall,
         "horizontalWall",
-        newVelocity.x,
-        newVelocity.y
+        velocity.x,
+        velocity.y
       ),
       verticalWall: this.wall.updateVelocity.bind(
         this.wall,
         "verticalWall",
-        newVelocity.x,
-        newVelocity.y
+        velocity.x,
+        velocity.y
       ),
       bottomWall: this.wall.updateVelocity.bind(
         this.wall,
         "bottomWall",
-        newVelocity.x,
-        newVelocity.y
+        velocity.x,
+        velocity.y
       ),
       paddle: this.paddle.updateVelocity.bind(
         this.paddle,
-        newVelocity.x,
-        newVelocity.y
+        velocity
       ),
       undefined: this.wall.updateVelocity.bind(
         this.wall,
         "undefined",
-        newVelocity.x,
-        newVelocity.y
+        velocity.x,
+        velocity.y
       )
     };
-    newVelocity = getVelocityFrom[collisionWith]();
-    const velocity = new Velocity(newVelocity.x, newVelocity.y);
+    velocity = getVelocityFrom[collisionWith]();
     return velocity;
   }
 }

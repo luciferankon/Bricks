@@ -82,7 +82,7 @@ const drawBall = function(document, ball) {
 };
 
 const drawBricks = function(document, bricks) {
-  for (let brickCount = 0; brickCount < ROW_COUNT*COLUMN_COUNT; brickCount++) {
+  for (let brickCount = 0; brickCount < bricks.bricks.length; brickCount++) {
     const brickContainer = document.getElementById(`brick_${brickCount + 1}`);
     setBrickPosition(bricks.bricks[brickCount], brickContainer);
   }
@@ -90,14 +90,7 @@ const drawBricks = function(document, bricks) {
 
 const moveBall = function(document, ball, paddle, wall, bricks) {
   const game = new Game(paddle, ball, wall, bricks);
-  let velocity = new Velocity(ball.velocity.x, ball.velocity.y);
-  const collisionCandidate = game.collidedWith();
-  const collisionWith = Object.keys(collisionCandidate).filter(
-    element => collisionCandidate[element]
-  );
-  velocity = game.getVelocity(collisionWith);
-  ball.setVelocity(velocity);
-  ball.move();
+  game.updateState();
   drawBricks(document, bricks);
   drawBall(document, ball);
 };

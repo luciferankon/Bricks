@@ -21,4 +21,12 @@ class Velocity{
     this.x = x;
     this.y = y;
   }
+
+  negateX(){
+    return {x: -this.x, y: this.y};
+  }
+
+  negateY(){
+    return {x: this.x, y: -this.y};
+  }
 }

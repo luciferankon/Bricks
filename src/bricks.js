@@ -14,14 +14,21 @@ class Bricks {
     const collisionBrick = this.bricks.filter(
       this.hasCollided.bind(null, ball)
     );
+    let velocity = new Velocity(ball.velocity.x, ball.velocity.y);
     if (collisionBrick.length != 0) {
       collisionBrick.filter(brick => brick.removeBrick());
-      return { x: ball.velocity.x, y: -ball.velocity.y };
+      // this.bricks = this.bricks.filter(brick => collisionBrick.some(collidedBrick => !isEqual(collidedBrick,brick)));
+      velocity = velocity.negateY();
     }
-    return { x: ball.velocity.x, y: ball.velocity.y };
+    return velocity;
   }
 }
 
-const isBetween = function(number,lowerRange, upperRange){
-  return number>lowerRange && number<upperRange;
+const isEqual = function(first,second){
+  const matchedKeys = Object.keys(first).filter((key)=>first[key]==second[key])
+  return matchedKeys.length == Object.keys(first).length;
 }
+
+const isBetween = function(number, lowerRange, upperRange) {
+  return number > lowerRange && number < upperRange;
+};

@@ -6,8 +6,9 @@ class Paddle {
     this.height = height;
   }
 
-  updateVelocity(x, y){
-    return {x: x, y: -y};
+  updateVelocity(velocity){
+    const newVelocity = new Velocity(velocity.x, velocity.y);
+    return newVelocity.negateY();
   }
 
   moveLeft(){
