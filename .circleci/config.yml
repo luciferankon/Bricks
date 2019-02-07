@@ -16,4 +16,4 @@ jobs:
         - ./node_modules
     - run:
         name: run-tests
-        command: npm run unit
+        command: npm test
