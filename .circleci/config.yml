@@ -1,12 +1,19 @@
-version: 2.1
-executors:
-  my-executor:
-    docker:
-      - image: circleci/ruby:2.5.1-node-browsers
-
+version: 2
 jobs:
   build:
-    executor: my-executor
+    docker:
+    - image: circleci/node:8.13.0
     steps:
-      - run: npm install
-      - run: npm test
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "package.json" }}
+    - run:
+        name: install-npm-packages
+        command: npm install
+    - save_cache:
+        key: dependency-cache-{{ checksum "package.json" }}
+        paths:
+        - ./node_modules
+    - run:
+        name: run-tests
+        command: npm run unit
