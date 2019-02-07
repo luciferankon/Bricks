@@ -5,7 +5,7 @@ executors:
       - image: circleci/ruby:2.5.1-node-browsers
 
 jobs:
-  my-job:
+  build:
     executor: my-executor
     steps:
       - run: npm install
